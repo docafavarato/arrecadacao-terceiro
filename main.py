@@ -209,7 +209,7 @@ def gGrafico():
         lista.append(int(str(a).replace('(', '',).replace(')', '').replace(',', '')))
         s = list(range(len(lista)))
         plt.title("Gráfico das doações")
-        plt.plot(s, lista)
+        plt.plot(s, lista, color="blue")
         plt.xlabel("Ordem das doações")
         plt.ylabel("Quantidade por doação")
         plt.legend(['Doações'])
