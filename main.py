@@ -55,9 +55,9 @@ class Listar():
         nome = window.nomeBuscarIn.text()
         cursor.execute(f"""SELECT Nome, Qtd,
                            CASE
-                                WHEN Qtd < 3 THEN 'Doação de POBRE'
-                                WHEN Qtd IN(4, 5) THEN 'Podia doar mais ne'
-                                WHEN Qtd > 6 THEN 'Deus te abençoe'
+                                WHEN Qtd < 3 THEN 'Baixo'
+                                WHEN Qtd IN(4, 5) THEN 'Médio'
+                                WHEN Qtd > 6 THEN 'Alto'
                                 ELSE 'É..'
                             END AS Avaliação
                             FROM escola
@@ -208,9 +208,8 @@ def gGrafico():
     for a in b:
         lista.append(int(str(a).replace('(', '',).replace(')', '').replace(',', '')))
         s = list(range(len(lista)))
-        plt.title("Um gráfico foda")
+        plt.title("Gráfico das doações")
         plt.plot(s, lista)
-        #plt.xticks([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
         plt.xlabel("Ordem das doações")
         plt.ylabel("Quantidade por doação")
         plt.legend(['Doações'])
