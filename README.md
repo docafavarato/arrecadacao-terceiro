@@ -6,6 +6,7 @@ Sistema de arrecadação de dinheiro para o Terceiro ano do Ensino Médio. Funç
 - Delete das doações por ID ou total
 - Tabela SQL com os dados das doações e opções de organização
 - Dados que se atualizam automaticamente com o total arrecadado, média das doações e total de doações
+- Planilha EXCEL gerada automaticamente com os dados
 - PDF gerado automaticamente com os dados
 - Gráfico gerado automaticamente com os dados
 
