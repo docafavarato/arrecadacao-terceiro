@@ -8,6 +8,7 @@ from fpdf import FPDF
 import os
 from matplotlib import pyplot as plt
 import time
+from openpyxl import Workbook
 import numpy as np
 
 banco = sqlite3.connect('escola.db')
@@ -55,9 +56,9 @@ class Listar():
         nome = window.nomeBuscarIn.text()
         cursor.execute(f"""SELECT Nome, Qtd,
                            CASE
-                                WHEN Qtd < 3 THEN 'Baixo'
-                                WHEN Qtd IN(4, 5) THEN 'Médio'
-                                WHEN Qtd > 6 THEN 'Alto'
+                                WHEN Qtd < 3 THEN 'Doação de POBRE'
+                                WHEN Qtd IN(4, 5) THEN 'Podia doar mais ne'
+                                WHEN Qtd > 6 THEN 'Deus te abençoe'
                                 ELSE 'É..'
                             END AS Avaliação
                             FROM escola
@@ -197,7 +198,7 @@ def gPdf():
     pdf.output("GFG.pdf") 
 
     time.sleep(0.4)
-    os.startfile('F:\Codes\GUIs\Arrecadação 3b\GFG.pdf')
+    os.startfile('GFG.pdf')
     
 def gGrafico():
     
@@ -206,14 +207,46 @@ def gGrafico():
     lista = []
     b = cursor.fetchall()
     for a in b:
-        lista.append(int(str(a).replace('(', '',).replace(')', '').replace(',', '')))
+        lista.append(float(str(a).replace('(', '',).replace(')', '').replace(',', '')))
         s = list(range(len(lista)))
-        plt.title("Gráfico das doações")
-        plt.plot(s, lista, color="blue")
+        plt.title("Um gráfico foda")
+        plt.plot(s, lista, color='blue')
+        #plt.xticks([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
         plt.xlabel("Ordem das doações")
         plt.ylabel("Quantidade por doação")
         plt.legend(['Doações'])
         plt.show()
+
+def gExcel():
+    book = Workbook()
+    sheet = book.active
+
+    sheet['A1'] = 'ID'
+    sheet['B1'] = 'Nome'
+    sheet['C1'] = 'Valor'
+    
+    id = 2
+    cursor.execute("SELECT ID FROM escola")
+    for text in cursor.fetchall():
+        sheet[f'A{id}'] = f'''{str(text).replace('(', '').replace(')', '').replace(',', '')}'''
+        id += 1
+        
+    nome = 2
+    cursor.execute("SELECT Nome FROM escola")
+    for text in cursor.fetchall():
+        sheet[f'B{nome}'] = f'''{str(text).replace('(', '').replace(')', '').replace(',', '')}'''
+        nome += 1
+        
+    qtd = 2
+    cursor.execute("SELECT Qtd FROM escola")
+    for text in cursor.fetchall():
+        sheet[f'C{qtd}'] = f'''{str(text).replace('(', '').replace(')', '').replace(',', '')}'''
+        qtd += 1
+
+
+    book.save("escola.xlsx")
+    os.popen('escola.xlsx')
+
 
 
 # Window
@@ -323,6 +356,7 @@ window.asc.clicked.connect(Listar.listarqtdAsc)
 window.organizar.clicked.connect(Listar.listardados)
 window.gerarPdf.clicked.connect(gPdf)
 window.gerarGrafico.clicked.connect(gGrafico)
+window.gerarExcel.clicked.connect(gExcel)
 window.excluirTudo.clicked.connect(Listar.msg_clicked)
 
 # Banco
