@@ -10,8 +10,9 @@ Sistema de arrecadação de dinheiro para o Terceiro ano do Ensino Médio. Funç
 - Gráfico gerado automaticamente com os dados
 
 
-![Captura de tela 2022-03-06 114106](https://user-images.githubusercontent.com/98183878/156928113-b2e98c8d-1883-4b7f-a041-7759dda361ec.png)
-![Captura de tela 2022-03-06 114120](https://user-images.githubusercontent.com/98183878/156928125-709d04b8-4e8c-4632-be9c-edaa066e7a19.png)
-![Captura de tela 2022-03-06 114204](https://user-images.githubusercontent.com/98183878/156928130-8deee00c-f97e-4b87-9cd6-31c399aa943c.png)
-![Captura de tela 2022-03-06 114223](https://user-images.githubusercontent.com/98183878/156928132-5267f284-2524-4a20-bc11-182d253da4d1.png)
-![Captura de tela 2022-03-06 114239](https://user-images.githubusercontent.com/98183878/156928134-ef57a726-41cd-44aa-a12f-7ce82361b80d.png)
+![1](https://user-images.githubusercontent.com/98183878/158027208-3e85dc34-ea3e-43d8-ad77-bff8abf06c77.png)
+![2](https://user-images.githubusercontent.com/98183878/158027215-5cf0a030-1d1c-4f0b-a66d-5d0da77e37ca.png)
+![3 ](https://user-images.githubusercontent.com/98183878/158027216-a34ecdc3-54fe-45c5-996f-3e953d2a3836.png)
+![4](https://user-images.githubusercontent.com/98183878/158027229-5c244157-4bad-4fdf-99a9-7842d2b98e55.png)
+![5](https://user-images.githubusercontent.com/98183878/158027241-4740a5de-0742-4a79-a254-f58c0c99ca88.png)
+![6](https://user-images.githubusercontent.com/98183878/158027245-411abc18-5299-4770-bf93-f30bca81c687.png)
