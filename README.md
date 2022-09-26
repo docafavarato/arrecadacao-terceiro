@@ -1,4 +1,4 @@
-# arrecadacao-terceirao
+# arrecadacao-terceiro
 
 Sistema de arrecadação de dinheiro para o Terceiro ano do Ensino Médio. Funções:
 - Cadastro das doações (ID AutoIncrement, Nome e Valor)
