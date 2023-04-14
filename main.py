@@ -1,6 +1,5 @@
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox
 import sys
 import sqlite3
@@ -9,11 +8,9 @@ import os
 from matplotlib import pyplot as plt
 import time
 from openpyxl import Workbook
-import numpy as np
 
-banco = sqlite3.connect('escola.db')
+banco = sqlite3.connect('databases/escola.db')
 cursor = banco.cursor()
-
 
 pdf = FPDF()
 pdf.add_page()
@@ -21,7 +18,6 @@ pdf.set_font("Arial", size = 15)
 pdf.set_text_color(233, 105, 105)
 
 class Listar():
-
     def listardados():
         cursor.execute('SELECT * FROM escola')
         dados = cursor.fetchall()
@@ -80,8 +76,6 @@ class Listar():
                 window.doado.setText(f'''R${str(a).replace('(', '',).replace(')', '').replace(',', '')}''')
         window.nomeBuscarIn.clear()
         
-    
-            
     def excluirAll():
          cursor.execute(F"""DELETE FROM escola""")
          window.idIn.clear()
@@ -117,15 +111,12 @@ class Listar():
              Listar.excluirAll()
          else:
             pass
-        
-    
-    
     
 def salvar():
     nome = window.nomeIn.text()
     qtd = window.qtdIn.value()
     arre = window.arrecadado
-    banco = sqlite3.connect('escola.db')
+    banco = sqlite3.connect('databases/escola.db')
     cursor = banco.cursor()
     cursor.execute(F"""INSERT INTO escola VALUES(Null, '{nome}', '{qtd}')""")
     cursor.execute(f"""SELECT SUM(Qtd) FROM escola""")
@@ -171,9 +162,7 @@ def excluir():
             
         Listar.listardados()
        
-    
 def gPdf():
-    
     pdf.cell(200, 10, txt = "Arrecadação Terceiro B", 
          ln = 1, align = 'C')
     
@@ -195,23 +184,20 @@ def gPdf():
         pdf.cell(200, 10, txt = f"Total de Doações: {str(c).replace('(', '',).replace(')', '').replace(',', '')}",
             ln = 2, align = 'L')
 
-    pdf.output("GFG.pdf") 
+    pdf.output("exported\GFG.pdf") 
 
     time.sleep(0.4)
-    os.startfile('GFG.pdf')
+    os.startfile("exported\GFG.pdf")
     
 def gGrafico():
-    
     cursor.execute("SELECT Qtd FROM escola GROUP BY Id")
-
     lista = []
     b = cursor.fetchall()
     for a in b:
         lista.append(float(str(a).replace('(', '',).replace(')', '').replace(',', '')))
         s = list(range(len(lista)))
-        plt.title("Um gráfico foda")
+        plt.title("Arrecadação 3b")
         plt.plot(s, lista, color='blue')
-        #plt.xticks([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
         plt.xlabel("Ordem das doações")
         plt.ylabel("Quantidade por doação")
         plt.legend(['Doações'])
@@ -224,41 +210,52 @@ def gExcel():
     sheet['A1'] = 'ID'
     sheet['B1'] = 'Nome'
     sheet['C1'] = 'Valor'
+    sheet['E1'] = 'Arrecadado'
+    sheet['F1'] = 'Média'
+    sheet['G1'] = 'Total'
     
     id = 2
     cursor.execute("SELECT ID FROM escola")
     for text in cursor.fetchall():
-        sheet[f'A{id}'] = f'''{str(text).replace('(', '').replace(')', '').replace(',', '')}'''
+        sheet[f'A{id}'] = str(text).replace('(', '').replace(')', '').replace(',', '')
         id += 1
         
     nome = 2
     cursor.execute("SELECT Nome FROM escola")
     for text in cursor.fetchall():
-        sheet[f'B{nome}'] = f'''{str(text).replace('(', '').replace(')', '').replace(',', '')}'''
+        sheet[f'B{nome}'] = str(text).replace('(', '').replace(')', '').replace(',', '')
         nome += 1
         
     qtd = 2
     cursor.execute("SELECT Qtd FROM escola")
     for text in cursor.fetchall():
-        sheet[f'C{qtd}'] = f'''{str(text).replace('(', '').replace(')', '').replace(',', '')}'''
+        sheet[f'C{qtd}'] = str(text).replace('(', '').replace(')', '').replace(',', '')
         qtd += 1
+    
+    cursor.execute("SELECT SUM(Qtd) FROM escola")
+    for text in cursor.fetchall():
+        sheet['E2'] = str(text).replace('(', '').replace(')', '').replace(',', '')
+    
+    cursor.execute("SELECT ROUND(AVG(Qtd), 2) FROM escola")
+    for text in cursor.fetchall():
+        sheet['F2'] = str(text).replace('(', '').replace(')', '').replace(',', '')
+        
+    cursor.execute("SELECT COUNT(Qtd) FROM escola")
+    for text in cursor.fetchall():
+        sheet['G2'] = str(text).replace('(', '').replace(')', '').replace(',', '')
 
 
-    book.save("escola.xlsx")
-    os.popen('escola.xlsx')
-
-
+    book.save("exported\escola.xlsx")
+    os.popen("exported\escola.xlsx")
 
 # Window
 app = QtWidgets.QApplication(sys.argv)
-window = uic.loadUi('escola1.ui')
+window = uic.loadUi('interfaces/escola1.ui')
 window.table.horizontalHeader().setStretchLastSection(True)
 Listar.listardados()
 
 # Style
 window.table.verticalHeader().hide()
-
-
 
 cursor.execute(f"""SELECT round(AVG(Qtd), 1) FROM escola""")
 for a in cursor.fetchall():
@@ -374,7 +371,6 @@ for b in cursor.fetchall():
 cursor.execute("""SELECT COUNT(Qtd) as total FROM escola""")
 for c in cursor.fetchall():
     window.total.setText(f'''{str(c).replace('(', '',).replace(')', '').replace(',', '')}''')
-
 
 window.show()
 app.exec()
